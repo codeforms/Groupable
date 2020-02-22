@@ -16,9 +16,16 @@ class CreateGroupTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->string('slug')->unique();
+            $table->integer('parent_id')->unsigned()->nullable();
             $table->integer('groupable_id')->unsigned();
             $table->string('groupable_type');
             $table->timestamps();
+
+            $table->foreign('parent_id')
+                    ->references('id')
+                    ->on('group')
+                    ->onDelete(DB::raw('set null'))
+                    ->onUpdate('cascade');
         });
     }
 
