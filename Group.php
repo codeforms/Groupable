@@ -3,7 +3,7 @@ namespace CodeForms\Repositories\Group;
 
 use CodeForms\Repositories\Meta\Metable;
 use Illuminate\Database\Eloquent\{Model};
-use CodeForms\Repositories\Group\Termable;
+use CodeForms\Repositories\Group\{Termable, Groupable};
 use CodeForms\Repositories\Slug\SlugTrait;
 /**
  * @package CodeForms\Repositories\Group\Group
@@ -36,9 +36,28 @@ class Group extends Model
 	/**
 	 * 
 	 */
-	protected $fillable = ['name', 'slug'];
+	protected $fillable = ['name', 'slug', 'parent_id'];
+
+	/**
+	 * Üst grup için belongsTo
+	 *
+	 */
+	public function parentGroup()
+	{
+		return $this->belongsTo(Group::class)->whereHas('parent_id');
+	}
+
+	/**
+	 * Alt gruplar için hasMany
+	 * 
+	 */
+	public function childGroup()
+	{
+		return $this->hasMany(Group::class, 'parent_id');
+	}
 
     /**
+     * morphTo
      * 
      */
     public function groupable()

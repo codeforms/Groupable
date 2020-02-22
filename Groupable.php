@@ -10,82 +10,101 @@ trait Groupable
 	/**
 	 * Bir grup verisini alma.
 	 * 
-	 * $criteria değişkeni bir grup id'si
-	 * veya grup adı olabilir.
+	 * $id değişkeni bir grup id'si
 	 * 
-	 * @param $criteria : int | string
+	 * @param int 		$id
+	 * @example $groupable->getGroup($id)
+	 * 
+	 * @return object
 	 */
-	public function getGroup($criteria) 
+	public function getGroup($id): object
 	{
-		if(is_integer($criteria))
-    		return $this->group()->find($criteria);
-
-    	return $this->group()->where('name', 'like', '%'.$criteria.'%')->first();
+		return $this->group()->find($id);
 	}
 
 	/**
 	 * Tüm grupları alma
 	 * 
-	 * @param $paginate
-	 * @param $eachSide
+	 * @param bool 		$paginate
+	 * @param int 		$eachSide
+	 * @example $groupable->getGroups()
+	 * @example $groupable->getGroups(10, 3)
 	 * 
 	 * @return object
 	 */
-	public function getGroups($paginate = null, $eachSide = 2) 
+	public function getGroups(bool $paginate = false, int $eachSide = 2): object
 	{
 		if($paginate)
-    		return $this->group()->paginate($paginate)->onEachSide($eachSide);
+    		return $this->group()->latest()->paginate($paginate)->onEachSide($eachSide);
 
-    	return $this->group()->get();
+    	return $this->group()->latest()->get();
 	}
 
 	/**
+	 * Yeni grup ekleme işlemi
 	 * 
+	 * @param string 	$name
+	 * @param int 		$parent_id
+	 * @example $groupable->newGroup('Genres')
+	 * @example $groupable->newGroup('Genres', 1)
+	 * 
+	 * @return bool
 	 */
-	public function saveGroup($name) 
+	public function newGroup(string $name, int $parent_id = null): bool
 	{
-		if(!self::hasGroup($name))
-			$this->group()->create([
-				'name' => $name,
-				'slug' => $this->setSlug($this, $name)
-			]);
+		$group = new Group;
 
-		return $this->getGroup(getGroup($criteria))->update([
-					'name' => $name,
-					'slug' => $this->setSlug($this, $name)
-				]);
+		return $this->group()->create([
+			'name'      => $name,
+			'parent_id' => $parent_id,
+			'slug'      => $group->setSlug($name)
+		]);
 	}
 
 	/**
+	 * Grup güncelleme işlemi
 	 * 
+	 * @param int 		$id
+	 * @param array 	$pack : name, parent_id, slug
+	 * @example $groupable->updateGroup(1, ['name' => 'Genres'])
+	 * 
+	 * @return bool
 	 */
-	public function hasGroup($criteria)
+	public function updateGroup($id, array $pack): bool
 	{
-		return (bool)self::getGroup($criteria)->count();
+		if(self::hasGroup($id))
+			return $this->getGroup($id)->update($pack);
 	}
 
 	/**
+	 * Mevcut bir grubu sorgulama
 	 * 
-	 * TODO
+	 * @param int $id
+	 * @example $groupable->hasGroup(1)
 	 * 
+	 * @return bool
 	 */
-	public function setParentGroup($id)
+	public function hasGroup($id): bool
+	{
+		return !is_null(self::getGroup($id));
+	}
+
+	/**
+	 * Mevcut bir grubu silme
+	 * 
+	 * @param int $id
+	 * @example $groupable->deleteGroup(1)
+	 * 
+	 * @return bool
+	 */
+	public function deleteGroup($id): bool
 	{
 		if (self::hasGroup($id))
-			return $this->group()->update(['parent_id' => $id]);
+			return $this->group()->find($id)->delete();
 	}
 
 	/**
-	 * 
-	 */
-	public function deleteGroup($id)
-	{
-		if (self::hasGroup($id))
-			return $this->group()->where('id', $id)->delete();
-	}
-
-	/**
-     * 
+     * morphToMany ilişkisi
      */
     public function terms()
     {
@@ -94,8 +113,6 @@ trait Groupable
 
 	/**
      * morphMany ilişkisi
-     *
-     * @return object
      */
     public function group()
     {

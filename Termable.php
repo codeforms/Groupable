@@ -13,7 +13,8 @@ trait Termable
      * not: Sadece Groupable trait dosyasını
      * kullanan veri türleri için
      * 
-     * @param array $terms
+     * @param array $terms : array içinde bir veya birden fazla string
+     * @example $group->createTerms(['Ambient', 'Electronic'])
      * 
      * @return bool
 	 */
@@ -31,10 +32,13 @@ trait Termable
 	}
 
     /**
+     * Bir nesneye terimler ekleme
+     * 
      * Termable'ı kullanan bir nesne ile
      * seçilen terimler arasında bağlantı oluşturma
      * 
-     * @param array $terms
+     * @param array $terms : terim id'leri
+     * @example $post->syncTerm([1, 2, 3])
      * 
      * @return bool
      */
