@@ -38,18 +38,13 @@ trait Termable
      * seçilen terimler arasında bağlantı oluşturma
      * 
      * @param array $terms : terim id'leri
-     * @example $post->syncTerm([1, 2, 3])
+     * @example $post->syncTerms([1, 2, 3])
      * 
      * @return bool
      */
-    public function syncTerm(array $terms)
+    public function syncTerms(array $terms)
     {
-        $data  = [];
-        $model = new Term;
-        foreach ($terms as $term)
-            $data[] = $term;
-
-        return $this->termable()->sync($data);
+        return $this->termable()->sync($terms);
     }
 
     /**
