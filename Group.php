@@ -44,7 +44,7 @@ class Group extends Model
 	 */
 	public function parentGroup()
 	{
-		return $this->belongsTo(Group::class)->whereHas('parent_id');
+		return $this->belongsTo(Group::class, 'parent_id');
 	}
 
 	/**
