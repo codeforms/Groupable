@@ -8,39 +8,6 @@ use CodeForms\Repositories\Group\{Group, Term};
 trait Groupable
 {
 	/**
-	 * Bir grup verisini alma.
-	 * 
-	 * $id değişkeni bir grup id'si
-	 * 
-	 * @param int 		$id
-	 * @example $groupable->getGroup($id)
-	 * 
-	 * @return object
-	 */
-	public function getGroup($id): object
-	{
-		return $this->group()->find($id);
-	}
-
-	/**
-	 * Tüm grupları alma
-	 * 
-	 * @param bool 		$paginate
-	 * @param int 		$eachSide
-	 * @example $groupable->getGroups()
-	 * @example $groupable->getGroups(10, 3)
-	 * 
-	 * @return object
-	 */
-	public function getGroups(bool $paginate = false, int $eachSide = 2): object
-	{
-		if($paginate)
-    		return $this->group()->latest()->paginate($paginate)->onEachSide($eachSide);
-
-    	return $this->group()->latest()->get();
-	}
-
-	/**
 	 * Yeni grup ekleme işlemi
 	 * 
 	 * @param string 	$name
@@ -54,7 +21,7 @@ trait Groupable
 	{
 		$group = new Group;
 
-		return $this->group()->create([
+		return $this->groups()->create([
 			'name'      => $name,
 			'parent_id' => $parent_id,
 			'slug'      => $group->setSlug($name)
@@ -73,7 +40,7 @@ trait Groupable
 	public function updateGroup($id, array $pack): bool
 	{
 		if(self::hasGroup($id))
-			return $this->getGroup($id)->update($pack);
+			return $this->groups()->find($id)->update($pack);
 	}
 
 	/**
@@ -86,7 +53,7 @@ trait Groupable
 	 */
 	public function hasGroup($id): bool
 	{
-		return !is_null(self::getGroup($id));
+		return !is_null($this->groups()->find($id));
 	}
 
 	/**
@@ -100,7 +67,7 @@ trait Groupable
 	public function deleteGroup($id): bool
 	{
 		if (self::hasGroup($id))
-			return $this->group()->find($id)->delete();
+			return $this->groups()->find($id)->delete();
 	}
 
 	/**
@@ -114,7 +81,7 @@ trait Groupable
 	/**
      * morphMany ilişkisi
      */
-    public function group()
+    public function groups()
     {
         return $this->morphMany(Group::class, 'groupable');
     }
