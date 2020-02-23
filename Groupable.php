@@ -48,9 +48,9 @@ trait Groupable
 	 * @example $groupable->newGroup('Genres')
 	 * @example $groupable->newGroup('Genres', 1)
 	 * 
-	 * @return bool
+	 * @return object
 	 */
-	public function newGroup(string $name, int $parent_id = null): bool
+	public function newGroup(string $name, int $parent_id = null): object
 	{
 		$group = new Group;
 
