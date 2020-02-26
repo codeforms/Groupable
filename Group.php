@@ -36,7 +36,7 @@ class Group extends Model
 	/**
 	 * 
 	 */
-	protected $fillable = ['name', 'slug', 'parent_id'];
+	protected $fillable = ['name', 'slug', 'parent_id', 'language_id'];
 
 	/**
 	 * Üst grup için belongsTo
@@ -51,7 +51,7 @@ class Group extends Model
 	 * Alt gruplar için hasMany
 	 * 
 	 */
-	public function childGroup()
+	public function childGroups()
 	{
 		return $this->hasMany(Group::class, 'parent_id');
 	}

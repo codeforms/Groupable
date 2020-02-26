@@ -17,6 +17,7 @@ class CreateGroupTable extends Migration
             $table->string('name');
             $table->string('slug')->unique();
             $table->integer('parent_id')->unsigned()->nullable();
+            $table->integer('language_id')->unsigned()->nullable();
             $table->integer('groupable_id')->unsigned();
             $table->string('groupable_type');
             $table->timestamps();

@@ -8,42 +8,6 @@ use CodeForms\Repositories\Group\{Group, Term};
 trait Groupable
 {
 	/**
-	 * Yeni grup ekleme işlemi
-	 * 
-	 * @param string 	$name
-	 * @param int 		$parent_id
-	 * @example $groupable->newGroup('Genres')
-	 * @example $groupable->newGroup('Genres', 1)
-	 * 
-	 * @return object
-	 */
-	public function newGroup(string $name, int $parent_id = null): object
-	{
-		$group = new Group;
-
-		return $this->groups()->create([
-			'name'      => $name,
-			'parent_id' => $parent_id,
-			'slug'      => $group->setSlug($name)
-		]);
-	}
-
-	/**
-	 * Grup güncelleme işlemi
-	 * 
-	 * @param int 		$id
-	 * @param array 	$pack : name, parent_id, slug
-	 * @example $groupable->updateGroup(1, ['name' => 'Genres'])
-	 * 
-	 * @return bool
-	 */
-	public function updateGroup($id, array $pack): bool
-	{
-		if(self::hasGroup($id))
-			return $this->groups()->find($id)->update($pack);
-	}
-
-	/**
 	 * Mevcut bir grubu sorgulama
 	 * 
 	 * @param int $id
@@ -57,32 +21,26 @@ trait Groupable
 	}
 
 	/**
-	 * Mevcut bir grubu silme
-	 * 
-	 * @param int $id
-	 * @example $groupable->deleteGroup(1)
-	 * 
-	 * @return bool
+	 * Bir gruba ait tüm terimler
 	 */
-	public function deleteGroup($id): bool
+	public function terms()
 	{
-		if (self::hasGroup($id))
-			return $this->groups()->find($id)->delete();
+		return $this->morphToMany(Term::class, 'termable');
 	}
 
 	/**
-     * morphToMany ilişkisi
-     */
-    public function terms()
-    {
-        return $this->morphToMany(Term::class, 'termable');
-    }
+	 * Sadece ana gruplar
+	 */
+	public function parentGroups()
+	{
+		return $this->morphMany(Group::class, 'groupable')->whereNull('parent_id');
+	}
 
 	/**
-     * morphMany ilişkisi
-     */
-    public function groups()
-    {
-        return $this->morphMany(Group::class, 'groupable');
-    }
+	 * Tüm gruplar (parent & child)
+	 */
+	public function groups()
+	{
+		return $this->morphMany(Group::class, 'groupable');
+	}
 }
