@@ -22,6 +22,7 @@ trait Termable
 	{
         $data  = [];
         $model = new Term;
+        
         foreach ($terms as $term)
             $data[] = new Term([
                 'name' => $term,
@@ -48,17 +49,15 @@ trait Termable
     }
 
     /**
-     * @return HasMany
+     * @return MorphMany
      */
     public function terms()
     {
         return $this->morphMany(Term::class, 'termable');
     }
 
-    /*
-     * 
-     *
-     * @return HasMany
+    /**
+     * @return MorphToMany
      */
     public function termable()
     {
