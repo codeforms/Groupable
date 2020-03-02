@@ -1,12 +1,32 @@
 <?php
 namespace CodeForms\Repositories\Group;
 
-use CodeForms\Repositories\Group\{Group, Term};
 /**
  * @package CodeForms\Repositories\Group\Groupable
  */
 trait Groupable
 {
+	/**
+	 * Gruplar için yeni terimler ekleme.
+     * 
+     * @param array $terms : array içinde bir veya birden fazla string
+     * 
+     * @return bool
+	 */
+	public function createTerms(array $terms)
+	{
+        $data  = [];
+        $model = new Term;
+        
+        foreach ($terms as $term)
+            $data[] = new Term([
+                'name' => $term,
+                'slug' => $model->setSlug($term)
+            ]);
+
+        return $this->terms()->saveMany($data);
+	}
+
 	/**
 	 * Mevcut bir grubu sorgulama
 	 * 
@@ -25,7 +45,16 @@ trait Groupable
 	 */
 	public function terms()
 	{
-		return $this->morphToMany(Term::class, 'termable');
+		return $this->morphMany(Term::class, 'termable');
+	}
+
+	/**
+	 * Üst grup
+	 *
+	 */
+	public function parentGroup()
+	{
+		return $this->morphOne(Group::class, 'groupable');
 	}
 
 	/**
@@ -34,6 +63,15 @@ trait Groupable
 	public function parentGroups()
 	{
 		return $this->morphMany(Group::class, 'groupable')->whereNull('parent_id');
+	}
+
+	/**
+	 * Alt gruplar
+	 * 
+	 */
+	public function childGroups()
+	{
+		return $this->morphMany(Group::class, 'groupable')->whereNotNull('parent_id');
 	}
 
 	/**
