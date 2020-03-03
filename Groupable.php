@@ -41,37 +41,11 @@ trait Groupable
 	}
 
 	/**
-	 * Bir gruba ait tüm terimler
-	 */
-	public function terms()
-	{
-		return $this->morphMany(Term::class, 'termable');
-	}
-
-	/**
-	 * Üst grup
-	 *
-	 */
-	public function parentGroup()
-	{
-		return $this->morphOne(Group::class, 'groupable');
-	}
-
-	/**
 	 * Sadece ana gruplar
 	 */
 	public function parentGroups()
 	{
-		return $this->morphMany(Group::class, 'groupable')->whereNull('parent_id');
-	}
-
-	/**
-	 * Alt gruplar
-	 * 
-	 */
-	public function childGroups()
-	{
-		return $this->morphMany(Group::class, 'groupable')->whereNotNull('parent_id');
+		return self::groups()->whereNull('parent_id');
 	}
 
 	/**

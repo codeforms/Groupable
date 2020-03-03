@@ -16,7 +16,7 @@ class TermRelation extends Model
     /**
      * 
      */
-	protected $table = 'termables';
+    protected $table = 'termables';
 
     /**
      * morphTo

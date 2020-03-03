@@ -25,7 +25,7 @@ class Group extends Model
 	/**
 	 * 
 	 */
-	use Termable, Groupable;
+	use Termable;
 
 	/**
      * 
@@ -36,6 +36,33 @@ class Group extends Model
 	 * 
 	 */
 	protected $fillable = ['name', 'slug', 'parent_id', 'language_id'];
+
+	/**
+	 * Bir gruba ait tüm terimler
+	 */
+	public function terms()
+	{
+		return $this->morphMany(Term::class, 'termable');
+	}
+
+	/**
+	 * Bir alt grubun ait olduğu
+	 * üst grup verisi
+	 *
+	 */
+	public function parentGroup()
+	{
+		return $this->belongsTo(self::class, 'parent_id');
+	}
+
+	/**
+	 * Alt gruplar
+	 * 
+	 */
+	public function childGroups()
+	{
+		return $this->hasMany(self::class, 'groupable_id', 'id')->whereNotNull('parent_id');
+	}
 
     /**
      * morphTo
