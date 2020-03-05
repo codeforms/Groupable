@@ -38,11 +38,24 @@ class Group extends Model
 	protected $fillable = ['name', 'slug', 'parent_id', 'language_id'];
 
 	/**
-	 * Bir gruba ait tüm terimler
+	 * Gruplar için yeni terimler ekleme.
+     * 
+     * @param array $terms : array içinde bir veya birden fazla string
+     * 
+     * @return bool
 	 */
-	public function terms()
+	public function createTerms(array $terms)
 	{
-		return $this->morphMany(Term::class, 'termable');
+        $data  = [];
+        $model = new Term;
+        
+        foreach ($terms as $term)
+            $data[] = new Term([
+                'name' => $term,
+                'slug' => $model->setSlug($term)
+            ]);
+
+        return $this->terms()->saveMany($data);
 	}
 
 	/**
@@ -62,6 +75,14 @@ class Group extends Model
 	public function childGroups()
 	{
 		return $this->hasMany(self::class, 'groupable_id', 'id')->whereNotNull('parent_id');
+	}
+
+	/**
+	 * Bir gruba ait tüm terimler
+	 */
+	public function terms()
+	{
+		return $this->morphMany(Term::class, 'termable');
 	}
 
     /**

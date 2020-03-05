@@ -7,27 +7,6 @@ namespace CodeForms\Repositories\Group;
 trait Groupable
 {
 	/**
-	 * Gruplar için yeni terimler ekleme.
-     * 
-     * @param array $terms : array içinde bir veya birden fazla string
-     * 
-     * @return bool
-	 */
-	public function createTerms(array $terms)
-	{
-        $data  = [];
-        $model = new Term;
-        
-        foreach ($terms as $term)
-            $data[] = new Term([
-                'name' => $term,
-                'slug' => $model->setSlug($term)
-            ]);
-
-        return $this->terms()->saveMany($data);
-	}
-
-	/**
 	 * Mevcut bir grubu sorgulama
 	 * 
 	 * @param int $id

@@ -20,6 +20,11 @@ class CreateTermsTable extends Migration
             $table->string('termable_type');
             $table->softDeletes();
             $table->timestamps();
+
+            $table->foreign('termable_id')
+                    ->references('id')
+                    ->on('group')
+                    ->onDelete('cascade');
         });
     }
 
