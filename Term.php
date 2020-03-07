@@ -57,7 +57,7 @@ class Term extends Model
     }
 
     /**
-     * 
+     * @return Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function relations()
     {
@@ -65,7 +65,7 @@ class Term extends Model
     }
 
     /**
-     * 
+     * @return Illuminate\Database\Eloquent\Relations\MorphTo
      */
     public function termable()
     {

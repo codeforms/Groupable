@@ -21,6 +21,8 @@ trait Groupable
 
 	/**
 	 * Sadece ana gruplar
+	 * 
+	 * @return Illuminate\Database\Eloquent\Relations\MorphMany
 	 */
 	public function parentGroups()
 	{
@@ -29,6 +31,8 @@ trait Groupable
 
 	/**
 	 * Tüm gruplar (parent & child)
+	 * 
+	 * @return Illuminate\Database\Eloquent\Relations\MorphMany
 	 */
 	public function groups()
 	{

@@ -62,6 +62,7 @@ class Group extends Model
 	 * Bir alt grubun ait olduğu
 	 * üst grup verisi
 	 *
+	 * @return Illuminate\Database\Eloquent\Relations\BelongsTo
 	 */
 	public function parentGroup()
 	{
@@ -71,14 +72,17 @@ class Group extends Model
 	/**
 	 * Alt gruplar
 	 * 
+	 * @return Illuminate\Database\Eloquent\Relations\HasMany
 	 */
 	public function childGroups()
 	{
-		return $this->hasMany(self::class, 'groupable_id', 'id')->whereNotNull('parent_id');
+		return $this->hasMany(self::class, 'parent_id', 'id');
 	}
 
 	/**
 	 * Bir gruba ait tüm terimler
+	 * 
+	 * @return Illuminate\Database\Eloquent\Relations\MorphMany
 	 */
 	public function terms()
 	{
@@ -87,6 +91,8 @@ class Group extends Model
 
     /**
      * morphTo
+     * 
+     * @return Illuminate\Database\Eloquent\Relations\MorphTo
      * 
      */
     public function groupable()
