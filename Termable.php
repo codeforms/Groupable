@@ -13,11 +13,11 @@ trait Termable
      * seçilen terimler arasında bağlantı oluşturma
      * 
      * @param array $terms : terim id'leri
-     * @example $post->syncTerms([1, 2, 3])
+     * @example $post->addTerms([1, 2, 3])
      * 
      * @return bool
      */
-    public function syncTerms(array $terms)
+    public function addTerms(array $terms)
     {
         return $this->termable()->sync($terms);
     }
