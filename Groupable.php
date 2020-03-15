@@ -7,6 +7,28 @@ namespace CodeForms\Repositories\Group;
 trait Groupable
 {
 	/**
+	 * Yeni grup ekleme işlemi
+	 * 
+	 * @param string 	$name
+	 * @param int 		$parent_id
+	 * 
+	 * @example $groupable->newGroup('Elektronik')
+	 * @example $groupable->newGroup('Elektronik', 1)
+	 * 
+	 * @return object
+	 */
+	public function newGroup(string $name, int $parent_id = null): object
+	{
+		$group = new Group;
+
+		return $this->groups()->create([
+			'name'      => $name,
+			'parent_id' => $parent_id,
+			'slug'      => $group->setSlug($name)
+		]);
+	}
+
+	/**
 	 * Mevcut bir grubu sorgulama
 	 * 
 	 * @param int $id

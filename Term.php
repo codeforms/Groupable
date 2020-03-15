@@ -51,7 +51,7 @@ class Term extends Model
         $collection = new Collection;
 
         foreach ($this->relations()->get() as $item)
-            $collection->push((object)app($item->termable_type)->where('id', $item->termable_id)->first());
+            $collection->push(app($item->termable_type)->find($item->termable_id));
  
         return $collection;
     }

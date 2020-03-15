@@ -4,6 +4,7 @@ namespace CodeForms\Repositories\Group;
 use CodeForms\Repositories\Meta\Metable;
 use Illuminate\Database\Eloquent\{Model};
 use CodeForms\Repositories\Slug\SlugTrait;
+use Illuminate\Database\Eloquent\Collection;
 /**
  * @package CodeForms\Repositories\Group\Group
  */
@@ -42,6 +43,8 @@ class Group extends Model
      * 
      * @param array $terms : array içinde bir veya birden fazla string
      * 
+     * @example $electronic->createTerms(['Bilgisayar', 'Beyaz Eşya'])
+     * 
      * @return bool
 	 */
 	public function createTerms(array $terms)
@@ -57,6 +60,32 @@ class Group extends Model
 
         return $this->terms()->saveMany($data);
 	}
+
+	/**
+     * Bir gruba ait tüm verileri veya bir gruba ait
+     * spesifik bir terimle bağlantılı tüm verileri dönderir.
+     * 
+     * @param string|array $slug : terim slug
+     * 
+     * @example $electronic->items()
+     * @example $electronic->items('bilgisayar')
+     * @example $electronic->items(['bilgisayar', 'beyaz-esya'])
+     * 
+     * @return mixed
+     */
+    public function items($slug = null)
+    {
+		$collection = new Collection;
+		$terms = $this->terms()->when(!is_null($slug), function($query) use($slug) {
+		            return $query->whereIn('slug', is_array($slug) ? $slug : [$slug]);
+		        })->get();
+		
+		if(count($terms) > 0)
+			foreach($terms as $term)
+        		$collection->push($term->items());
+
+        	return $collection->collapse()->unique('id');
+    }
 
 	/**
 	 * Bir alt grubun ait olduğu
