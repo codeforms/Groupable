@@ -11,20 +11,22 @@ trait Groupable
 	 * 
 	 * @param string 	$name
 	 * @param int 		$parent_id
+	 * @param int 		$language_id
 	 * 
 	 * @example $groupable->newGroup('Elektronik')
-	 * @example $groupable->newGroup('Elektronik', 1)
+	 * @example $groupable->newGroup('Elektronik', 1, 2)
 	 * 
 	 * @return object
 	 */
-	public function newGroup(string $name, int $parent_id = null): object
+	public function newGroup(string $name, int $parent_id = null, int $language_id = null): object
 	{
 		$group = new Group;
 
 		return $this->groups()->create([
-			'name'      => $name,
-			'parent_id' => $parent_id,
-			'slug'      => $group->setSlug($name)
+			'name'        => $name,
+			'parent_id'   => $parent_id,
+			'language_id' => $language_id,
+			'slug'        => $group->setSlug($name)
 		]);
 	}
 

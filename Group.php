@@ -77,14 +77,14 @@ class Group extends Model
     {
 		$collection = new Collection;
 		$terms = $this->terms()->when(!is_null($slug), function($query) use($slug) {
-		            return $query->whereIn('slug', is_array($slug) ? $slug : [$slug]);
+					return $query->whereIn('slug', is_array($slug) ? $slug : [$slug]);
 		        })->get();
 		
 		if(count($terms) > 0)
 			foreach($terms as $term)
-        		$collection->push($term->items());
+				$collection->push($term->items());
 
-        	return $collection->collapse()->unique('id');
+			return $collection->collapse()->unique('id');
     }
 
 	/**
