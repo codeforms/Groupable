@@ -77,7 +77,7 @@ class Group extends Model
     {
 		$collection = new Collection;
 		$terms = $this->terms()->when(!is_null($slug), function($query) use($slug) {
-					return $query->whereIn('slug', is_array($slug) ? $slug : [$slug]);
+					return $query->whereIn('slug', (array)$slug);
 		        })->get();
 		
 		if(count($terms) > 0)
