@@ -11,9 +11,6 @@ use Illuminate\Database\Eloquent\Collection;
 class Group extends Model
 {
 	/**
-	 * Veri grupları için ekstra bilgi
-	 * kaydetmek istersek şayet hazırda bulunsun.
-	 * 
      * @link https://github.com/codeforms/Metable
 	 */
 	use Metable;
@@ -29,21 +26,19 @@ class Group extends Model
 	use Termable;
 
 	/**
-     * 
+     * @var string
      */
 	protected $table = 'group';
 
 	/**
-	 * 
+	 * @var array
 	 */
 	protected $fillable = ['name', 'slug', 'parent_id', 'language_id'];
 
 	/**
-	 * Gruplar için yeni terimler ekleme.
+     * @param array $terms
      * 
-     * @param array $terms : array içinde bir veya birden fazla string
-     * 
-     * @example $electronic->createTerms(['Bilgisayar', 'Beyaz Eşya'])
+     * @example $genres->createTerms(['Ambient', 'House'])
      * 
      * @return bool
 	 */
@@ -62,14 +57,11 @@ class Group extends Model
 	}
 
 	/**
-     * Bir gruba ait tüm verileri veya bir gruba ait
-     * spesifik bir terimle bağlantılı tüm verileri dönderir.
+     * @param string|array $slug
      * 
-     * @param string|array $slug : terim slug
-     * 
-     * @example $electronic->items()
-     * @example $electronic->items('bilgisayar')
-     * @example $electronic->items(['bilgisayar', 'beyaz-esya'])
+     * @example $genres->items()
+     * @example $genres->items('ambient')
+     * @example $genres->items(['ambient', 'house'])
      * 
      * @return mixed
      */
@@ -88,9 +80,6 @@ class Group extends Model
     }
 
 	/**
-	 * Bir alt grubun ait olduğu
-	 * üst grup verisi
-	 *
 	 * @return Illuminate\Database\Eloquent\Relations\BelongsTo
 	 */
 	public function parentGroup()
@@ -99,8 +88,6 @@ class Group extends Model
 	}
 
 	/**
-	 * Alt gruplar
-	 * 
 	 * @return Illuminate\Database\Eloquent\Relations\HasMany
 	 */
 	public function childGroups()
@@ -109,8 +96,6 @@ class Group extends Model
 	}
 
 	/**
-	 * Bir gruba ait tüm terimler
-	 * 
 	 * @return Illuminate\Database\Eloquent\Relations\MorphMany
 	 */
 	public function terms()
@@ -119,10 +104,7 @@ class Group extends Model
 	}
 
     /**
-     * morphTo
-     * 
      * @return Illuminate\Database\Eloquent\Relations\MorphTo
-     * 
      */
     public function groupable()
     {

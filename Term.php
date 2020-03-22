@@ -11,9 +11,6 @@ use Illuminate\Database\Eloquent\{Model, SoftDeletes};
 class Term extends Model
 {
     /**
-     * Terimler için ekstra bilgi
-     * kaydetmek istersek şayet hazırda bulunsun.
-     * 
      * @link https://github.com/codeforms/Metable
      */
     use Metable;
@@ -39,9 +36,6 @@ class Term extends Model
     protected $fillable = ['slug', 'name'];
 
     /**
-     * Bir terimle ilişkili tüm
-     * içerikler / veriler
-     * 
      * @example $term->items()
      * 
      * @return object

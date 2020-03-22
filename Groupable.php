@@ -7,14 +7,12 @@ namespace CodeForms\Repositories\Group;
 trait Groupable
 {
 	/**
-	 * Yeni grup ekleme işlemi
-	 * 
 	 * @param string 	$name
 	 * @param int 		$parent_id
 	 * @param int 		$language_id
 	 * 
-	 * @example $groupable->newGroup('Elektronik')
-	 * @example $groupable->newGroup('Elektronik', 1, 2)
+	 * @example $groupable->newGroup('Genres')
+	 * @example $groupable->newGroup('Genres', 1, 2)
 	 * 
 	 * @return object
 	 */
@@ -31,8 +29,6 @@ trait Groupable
 	}
 
 	/**
-	 * Mevcut bir grubu sorgulama
-	 * 
 	 * @param int $id
 	 * @example $groupable->hasGroup(1)
 	 * 
@@ -44,8 +40,16 @@ trait Groupable
 	}
 
 	/**
-	 * Sadece ana gruplar
+	 * @example $groupable->hasGroups()
 	 * 
+	 * @return bool
+	 */
+	public function hasGroups(): bool
+	{
+		return (bool)$this->groups()->count();
+	}
+
+	/**
 	 * @return Illuminate\Database\Eloquent\Relations\MorphMany
 	 */
 	public function parentGroups()
@@ -54,8 +58,6 @@ trait Groupable
 	}
 
 	/**
-	 * Tüm gruplar (parent & child)
-	 * 
 	 * @return Illuminate\Database\Eloquent\Relations\MorphMany
 	 */
 	public function groups()

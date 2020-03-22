@@ -7,26 +7,21 @@ namespace CodeForms\Repositories\Group;
 trait Termable
 {
     /**
-     * Bir nesneye terimler ekleme
-     * 
-     * Termable'ı kullanan bir nesne ile
-     * seçilen terimler arasında bağlantı oluşturma
-     * 
-     * @param array $terms : terim id'leri
-     * @example $post->addTerms()
+     * @param array $terms : term ids
+     * @example $post->addTerms() (revoke all terms)
      * @example $post->addTerms([1, 2, 3])
      * 
      * @return bool
      */
     public function addTerms(array $terms = [])
     {
-        return $this->termable()->sync($terms);
+        return $this->terms()->sync($terms);
     }
 
     /**
      * @return MorphToMany
      */
-    public function termable()
+    public function terms()
     {
         return $this->morphToMany(TermRelation::class, 'termable');
     }
