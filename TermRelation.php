@@ -19,7 +19,7 @@ class TermRelation extends Model
     protected $table = 'termables';
 
     /**
-     * morphTo
+     * @return Illuminate\Database\Eloquent\Relations\MorphTo
      */
     public function termable() 
     {

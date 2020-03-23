@@ -15,13 +15,21 @@ trait Termable
      */
     public function addTerms(array $terms = [])
     {
-        return $this->terms()->sync($terms);
+        return $this->termRelation()->sync($terms);
     }
 
     /**
-     * @return MorphToMany
+     * @return Illuminate\Database\Eloquent\Relations\MorphMany
      */
     public function terms()
+    {
+        return $this->morphMany(TermRelation::class, 'termable');
+    }
+
+    /**
+     * @return Illuminate\Database\Eloquent\Relations\MorphToMany
+     */
+    public function termRelation()
     {
         return $this->morphToMany(TermRelation::class, 'termable');
     }
