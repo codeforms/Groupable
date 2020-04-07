@@ -22,10 +22,10 @@ class CreateGroupTable extends Migration
             $table->timestamps();
 
             $table->foreign('parent_id')
-                    ->references('id')
-                    ->on('group')
-                    ->onDelete(DB::raw('set null'))
-                    ->onUpdate('cascade');
+                ->references('id')
+                ->on('group')
+                ->onDelete(DB::raw('set null'))
+                ->onUpdate('cascade');
         });
 
         Schema::create('terms', function (Blueprint $table) 
@@ -41,10 +41,12 @@ class CreateGroupTable extends Migration
         Schema::create('termables', function (Blueprint $table) 
         {
             $table->integer('term_relation_id')->unsigned();
-            $table->integer('termable_id')->unsigned();
-            $table->string('termable_type');
+            $table->morphs('termable');
 
-            $table->foreign('term_relation_id')->references('id')->on('terms')->onDelete('cascade');
+            $table->foreign('term_relation_id')
+                ->references('id')
+                ->on('terms')
+                ->onDelete('cascade');
         });
     }
 
