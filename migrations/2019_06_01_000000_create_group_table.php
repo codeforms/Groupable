@@ -13,24 +13,18 @@ class CreateGroupTable extends Migration
     {
         Schema::create('group', function (Blueprint $table) 
         {
-            $table->increments('id');
+            $table->id();
             $table->string('name');
             $table->string('slug')->unique();
             $table->integer('parent_id')->unsigned()->nullable();
             $table->integer('language_id')->unsigned()->nullable();
             $table->morphs('groupable');
             $table->timestamps();
-
-            $table->foreign('parent_id')
-                ->references('id')
-                ->on('group')
-                ->onDelete(DB::raw('set null'))
-                ->onUpdate('cascade');
         });
 
         Schema::create('terms', function (Blueprint $table) 
         {
-            $table->increments('id');
+            $table->id();
             $table->string('name');
             $table->string('slug')->unique();
             $table->morphs('termable');
@@ -42,11 +36,6 @@ class CreateGroupTable extends Migration
         {
             $table->integer('term_relation_id')->unsigned();
             $table->morphs('termable');
-
-            $table->foreign('term_relation_id')
-                ->references('id')
-                ->on('terms')
-                ->onDelete('cascade');
         });
     }
 
