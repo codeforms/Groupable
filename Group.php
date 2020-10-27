@@ -42,7 +42,7 @@ class Group extends Model
      * 
      * @return bool
 	 */
-	public function createTerms(array $terms)
+	public function createTerms(array $terms = [])
 	{
         $data  = [];
         $model = new Term;
@@ -68,9 +68,9 @@ class Group extends Model
     public function items($slug = null)
     {
 		$collection = new Collection;
-		$terms = $this->terms()->when(!is_null($slug), function($query) use($slug) {
-					return $query->whereIn('slug', (array)$slug);
-		        })->get();
+		$terms      = $this->terms()->when(!is_null($slug), function($query) use($slug) {
+			return $query->whereIn('slug', (array)$slug);
+        })->get();
 		
 		if(count($terms) > 0)
 			foreach($terms as $term)
@@ -109,5 +109,16 @@ class Group extends Model
     public function groupable()
     {
         return $this->morphTo();
-    }
+	}
+	
+	/**
+	 * @param \Illuminate\Database\Eloquent\Builder $query
+	 * @param $language_id
+	 * 
+	 * @return \Illuminate\Database\Eloquent\Builder
+	 */
+	public function scopeByLanguage($query, $language_id)
+	{
+		return $query->where('language_id', $language_id);
+	}
 }
