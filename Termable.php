@@ -23,7 +23,9 @@ trait Termable
      */
     public function terms()
     {
-        return $this->morphMany(TermRelation::class, 'termable');
+        return $this->morphMany(TermRelation::class, 'termable')->join('terms', function($join) {
+            $join->on('terms.id','=','termables.term_relation_id');
+        });
     }
 
     /**
