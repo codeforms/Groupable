@@ -1,6 +1,7 @@
 <?php 
 namespace CodeForms\Repositories\Group;
 
+use Illuminate\Support\Arr;
 use CodeForms\Repositories\Meta\Metable;
 use Illuminate\Database\Eloquent\{Model};
 use CodeForms\Repositories\Slug\SlugTrait;
@@ -38,16 +39,17 @@ class Group extends Model
 	/**
      * @param array $terms
      * 
-     * @example $genres->createTerms(['Ambient', 'House'])
+     * @example $genre->createTerms('Ambient')
+     * @example $genre->createTerms(['Ambient', 'House'])
      * 
      * @return bool
 	 */
-	public function createTerms(array $terms = [])
+	public function createTerms(...$terms)
 	{
         $data  = [];
         $model = new Term;
         
-        foreach ($terms as $term)
+        foreach (Arr::flatten($terms) as $term)
             $data[] = new Term([
                 'name' => $term,
                 'slug' => $model->setSlug($term)
@@ -59,9 +61,9 @@ class Group extends Model
 	/**
      * @param string|array $slug
      * 
-     * @example $genres->items()
-     * @example $genres->items('ambient')
-     * @example $genres->items(['ambient', 'house'])
+     * @example $genre->items()
+     * @example $genre->items('ambient')
+     * @example $genre->items(['ambient', 'house'])
      * 
      * @return mixed
      */

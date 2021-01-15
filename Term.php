@@ -37,6 +37,7 @@ class Term extends Model
 
     /**
      * @example $term->items()
+     * @example Term::with('items')->get()
      * 
      * @return object
      */
@@ -48,6 +49,16 @@ class Term extends Model
             $collection->push(app($item->termable_type)->find($item->termable_id));
  
         return $collection;
+    }
+
+    /**
+     * @example $term->group
+     *
+     * @return Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function group()
+    {
+        return $this->termable();
     }
 
     /**
