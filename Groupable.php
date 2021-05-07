@@ -46,7 +46,7 @@ trait Groupable
 	 */
 	public function hasGroups(): bool
 	{
-		return (bool)$this->groups()->count();
+		return !$this->groups()->isEmpty();
 	}
 
 	/**
@@ -54,14 +54,22 @@ trait Groupable
 	 */
 	public function parentGroups()
 	{
-		return self::groups()->whereNull('parent_id');
+		return $this->groups()->whereNull('parent_id');
 	}
 
 	/**
+	 * @param string|array
+	 *
+	 * @example $groupable->groups
+	 * @example $groupable->groups('colors')->get()
+	 * @example $groupable->groups('colors')->with('terms')->get()
+	 * 
 	 * @return Illuminate\Database\Eloquent\Relations\MorphMany
 	 */
-	public function groups()
+	public function groups($group = null)
 	{
-		return $this->morphMany(Group::class, 'groupable');
+		return $this->morphMany(Group::class, 'groupable')->when(!is_null($group), function($query) use($group) {
+			return $query->whereIn('name', (array)$group);
+        });
 	}
 }
