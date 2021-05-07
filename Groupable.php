@@ -62,7 +62,9 @@ trait Groupable
 	 *
 	 * @example $groupable->groups
 	 * @example $groupable->groups('colors')->get()
+	 * @example $groupable->groups(['colors', 'sizes'])->get()
 	 * @example $groupable->groups('colors')->with('terms')->get()
+	 * @example $groupable->groups(['colors', 'sizes'])->with('terms')->get()
 	 * 
 	 * @return Illuminate\Database\Eloquent\Relations\MorphMany
 	 */
