@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\{Model, SoftDeletes};
 class Term extends Model
 {
     /**
+     * Optional
      * @link https://github.com/codeforms/Metable
      */
     use Metable;
@@ -52,13 +53,11 @@ class Term extends Model
     }
 
     /**
-     * @example $term->group
-     *
      * @return Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function group()
     {
-        return $this->termable();
+        return $this->hasOne(Group::class, 'id', 'termable_id');
     }
 
     /**

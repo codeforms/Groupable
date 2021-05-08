@@ -35,6 +35,7 @@ class CreateGroupTable extends Migration
         Schema::create('termables', function (Blueprint $table) 
         {
             $table->integer('term_relation_id')->unsigned();
+            $table->integer('group_id')->unsigned();
             $table->morphs('termable');
         });
     }

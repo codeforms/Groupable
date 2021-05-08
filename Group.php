@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Collection;
 class Group extends Model
 {
 	/**
+	 * Optional
      * @link https://github.com/codeforms/Metable
 	 */
 	use Metable;
@@ -37,7 +38,7 @@ class Group extends Model
 	protected $fillable = ['name', 'slug', 'parent_id', 'language_id'];
 
 	/**
-     * @param array $terms
+     * @param array|string $terms
      * 
      * @example $genre->createTerms('Ambient')
      * @example $genre->createTerms(['Ambient', 'House'])

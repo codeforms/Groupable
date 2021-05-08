@@ -19,6 +19,14 @@ class TermRelation extends Model
     protected $table = 'termables';
 
     /**
+     * @return Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function group()
+    {
+        return $this->belongsTo(Group::class, 'group_id');
+    }
+
+    /**
      * @return Illuminate\Database\Eloquent\Relations\MorphTo
      */
     public function termable() 

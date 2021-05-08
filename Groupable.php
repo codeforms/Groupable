@@ -58,7 +58,7 @@ trait Groupable
 	}
 
 	/**
-	 * @param string|array
+	 * @param string|array $group
 	 *
 	 * @example $groupable->groups
 	 * @example $groupable->groups('colors')->get()
@@ -71,7 +71,7 @@ trait Groupable
 	public function groups($group = null)
 	{
 		return $this->morphMany(Group::class, 'groupable')->when(!is_null($group), function($query) use($group) {
-			return $query->whereIn('name', (array)$group);
+			return $query->whereIn('slug', (array)$group);
         });
 	}
 }
