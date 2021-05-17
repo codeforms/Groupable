@@ -49,7 +49,9 @@ class Term extends Model
         foreach ($this->relations()->get() as $item)
             $collection->push(app($item->termable_type)->find($item->termable_id));
  
-        return $collection;
+        return $collection->filter(function ($object) { 
+            return !is_null($object); 
+        });
     }
 
     /**
